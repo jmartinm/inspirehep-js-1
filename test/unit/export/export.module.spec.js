@@ -35,8 +35,12 @@ describe('Unit: testing dependencies', function() {
 
   beforeEach(function() {
     // Get module
-    module = angular.module('citemodal');
+    module = angular.module('export');
     dependencies = module.requires;
+  });
+
+  it('should load ngclipboard module', function() {
+    expect(hasModule('ngclipboard')).to.be.ok;
   });
 
   it('should load ui bootstrap module', function() {
@@ -44,15 +48,15 @@ describe('Unit: testing dependencies', function() {
   });
 
   it('should load controllers module', function() {
-    expect(hasModule('citemodal.controllers')).to.be.ok;
+    expect(hasModule('export.controllers')).to.be.ok;
   });
 
   it('should load services module', function() {
-    expect(hasModule('citemodal.services')).to.be.ok;
+    expect(hasModule('export.services')).to.be.ok;
   });
 
   it('should load services module', function() {
-    expect(hasModule('citemodal.services')).to.be.ok;
+    expect(hasModule('export.services')).to.be.ok;
   });
 
 });

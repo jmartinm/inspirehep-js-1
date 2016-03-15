@@ -50,8 +50,11 @@ module.exports = function(config) {
     files: [
       'node_modules/jquery/dist/jquery.js',
       'node_modules/angular/angular.js',
+      'node_modules/angular-sanitize/angular-sanitize.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+      'node_modules/clipboard/dist/clipboard.js',
+      'node_modules/ngclipboard/src/ngclipboard.js',
       'src/**/*.js',
       'src/**/*.html',
       'test/unit/**/*.js',

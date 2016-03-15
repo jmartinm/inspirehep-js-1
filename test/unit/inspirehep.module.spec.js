@@ -40,7 +40,7 @@ describe('Unit: testing dependencies', function() {
   });
 
   it('should load modal module', function() {
-    expect(hasModule('citemodal')).to.be.ok;
+    expect(hasModule('export')).to.be.ok;
   });
 
 });

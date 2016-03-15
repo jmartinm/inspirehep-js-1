@@ -1,6 +1,6 @@
 (function(angular) {
 
-  function inspireCiteModal($uibModal) {
+  function inspireExportModal($uibModal) {
 
     function link(scope, element, attrs) {
 
@@ -9,7 +9,7 @@
           animation: true,
           templateUrl: attrs.bodyTemplate,
           size: size,
-          controller: 'modalInstanceCtrl',
+          controller: 'exportModalInstanceCtrl',
           controllerAs: 'vm',
           resolve: {
             recid: function() {
@@ -32,9 +32,9 @@
       };
   }
 
-  inspireCiteModal.$inject = ['$uibModal'];
+  inspireExportModal.$inject = ['$uibModal'];
 
-  angular.module('citemodal.directives', [])
-    .directive('inspireCiteModal', inspireCiteModal);
+  angular.module('export.directives', [])
+    .directive('inspireExportModal', inspireExportModal);
 
 })(angular);
