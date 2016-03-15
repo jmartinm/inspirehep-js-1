@@ -15,6 +15,13 @@
     'citemodal.controllers'
   ]);
 
+  angular.module('citemodal').config(['$uibTooltipProvider', function($uibTooltipProvider){
+    $uibTooltipProvider.setTriggers({
+      'click': 'mouseleave',     
+    });
+  }]);
+             
+
 })(angular);
 
 (function(angular) {
