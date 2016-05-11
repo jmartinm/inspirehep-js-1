@@ -21,11 +21,10 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-'use strict';
+describe('Controller: ExportInstanceCtrl', function () {
 
-describe('Controller: modalInstanceCtrl', function () {
-
-  beforeEach(angular.mock.module('citemodal'));
+  beforeEach(angular.mock.module('export'));
+  beforeEach(angular.mock.module('checkbox'));
 
   var $controller;
   var $httpBackend;
@@ -33,13 +32,18 @@ describe('Controller: modalInstanceCtrl', function () {
   var ctrl;
   var scope;
   var modalInstance;
+  var sandbox;
+  var _exportRecords;
 
   beforeEach(inject(
-    function (_$httpBackend_, _$rootScope_, _$controller_, exportAPI) {
+    function (_$httpBackend_, _$rootScope_, _$controller_, exportAPI, exportRecords) {
       $controller = _$controller_;
       $httpBackend = _$httpBackend_;
       $rootScope = _$rootScope_;
       scope = $rootScope;
+      _exportRecords = exportRecords;
+
+      sandbox = sinon.sandbox.create();
 
       modalInstance = { // Create a mock object using sinon spies
         close: sinon.spy(),
@@ -48,7 +52,23 @@ describe('Controller: modalInstanceCtrl', function () {
           then: sinon.spy()
         }
       };
-      ctrl = $controller('modalInstanceCtrl', {
+
+      scope.$parent = {}
+      scope.$parent.vm = {}
+      scope.$parent.vm.invenioSearchCurrentArgs = {
+        "method": "GET",
+        "params": {
+          "page": 1,
+          "size": 25,
+          "q": ""
+        },
+        "url": "/api/literature/",
+        "headers": {
+          "Accept": "application/vnd+inspire.brief+json"
+        }
+      }
+
+      ctrl = $controller('exportModalInstanceCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
         exportAPI: exportAPI,
@@ -62,6 +82,10 @@ describe('Controller: modalInstanceCtrl', function () {
         data: 'My BibTex'
       };
 
+      var response_multiple_bibtex = {
+        data: 'My BibTex\nMy other BibTex'
+      };
+
       var response_latexeu = {
         data: 'My LaTeX EU'
       };
@@ -70,28 +94,37 @@ describe('Controller: modalInstanceCtrl', function () {
         data: 'My LaTeX EU'
       };
 
-      $httpBackend.whenGET('/api/literature/123', {
+      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'
       }
       ).respond(200, response_bibtex);
 
-      $httpBackend.whenGET('/api/literature/123', {
+      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123+OR+control_number:555&size=25', {
+        'Accept': 'application/x-bibtex'
+      }
+      ).respond(200, response_multiple_bibtex);
+
+      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
         'Accept': 'application/x-latexeu'
       }
       ).respond(200, response_latexeu);
 
-      $httpBackend.whenGET('/api/literature/123', {
+      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
         'Accept': 'application/x-latexus'
       }
       ).respond(200, response_latexus);
 
-      $httpBackend.whenGET('/api/literature/500', {
+      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:500&size=25', {
         'Accept': 'application/x-bibtex'
       }
       ).respond(500, {success: false});
 
     })
   );
+
+  afterEach(function () {
+    sandbox.restore();
+  });
 
   describe('Initial state', function () {
     it('should instantiate the controller properly', function () {
@@ -107,7 +140,7 @@ describe('Controller: modalInstanceCtrl', function () {
   describe('Loading formats', function () {
     it('should send an initial request to load a format', function () {
 
-      $httpBackend.expectGET('/api/literature/123', {
+      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'
       });
 
@@ -119,7 +152,7 @@ describe('Controller: modalInstanceCtrl', function () {
       // Flush initial request
       $httpBackend.flush();
 
-      $httpBackend.expectGET('/api/literature/123', {
+      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
         'Accept': 'application/x-latexus'
       });
 
@@ -127,7 +160,7 @@ describe('Controller: modalInstanceCtrl', function () {
 
       $httpBackend.flush();
 
-      $httpBackend.expectGET('/api/literature/123', {
+      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
         'Accept': 'application/x-latexeu'
       });
 
@@ -143,9 +176,7 @@ describe('Controller: modalInstanceCtrl', function () {
 
       ctrl.recid = '500';
 
-      var spy = sinon.spy()
-
-      $httpBackend.expectGET('/api/literature/500', {
+      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:500&size=25', {
         'Accept': 'application/x-bibtex'
       });
 
@@ -153,6 +184,35 @@ describe('Controller: modalInstanceCtrl', function () {
 
       $httpBackend.flush();
     });
+
+    it('should work with multiple ids', function () {
+
+      sandbox.stub(_exportRecords, 'getIdsToExport').returns(['123', '555']);
+
+      ctrl.recid = undefined;
+
+      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123+OR+control_number:555&size=25', {
+        'Accept': 'application/x-bibtex'
+      });
+
+      ctrl.loadFormat();
+
+      $httpBackend.flush();
+      
+      expect(_exportRecords.getIdsToExport.calledOnce).to.equal(true);
+    });
+
+    it('should download a given format', function () {
+
+      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+        'Accept': 'application/x-bibtex'
+      });
+
+      $httpBackend.flush();
+
+      ctrl.downloadFormat();
+    });
+
 
   });
 

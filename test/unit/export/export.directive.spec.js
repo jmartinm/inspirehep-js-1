@@ -23,7 +23,7 @@
 
 'use strict';
 
-describe('Check citemodal directive', function() {
+describe('Check export directive', function() {
 
   var $compile;
   var $rootScope;
@@ -34,8 +34,9 @@ describe('Check citemodal directive', function() {
   // Load the templates
   beforeEach(angular.mock.module('templates'));
 
-  // Inject the angular module
-  beforeEach(angular.mock.module('citemodal'));
+  beforeEach(angular.mock.module('export'));
+  
+  beforeEach(angular.mock.module('checkbox'));
 
   beforeEach(
     inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
@@ -45,17 +46,30 @@ describe('Check citemodal directive', function() {
       $rootScope = _$rootScope_;
 
       scope = $rootScope;
+      scope.vm = {};
+      scope.vm.invenioSearchCurrentArgs = {
+        "method": "GET",
+        "params": {
+          "page": 1,
+          "size": 25,
+          "q": ""
+        },
+        "url": "/api/literature/",
+        "headers": {
+          "Accept": "application/vnd+inspire.brief+json"
+        }
+      }
 
-      template = ' <inspire-cite-modal button-template="src/inspirehep-js/citemodal/templates/button.html"' +
-                 ' body-template="src/inspirehep-js/citemodal/templates/modalbody.html"' +
-                 ' recid=123> </inspire-cite-modal>';
+      template = ' <inspire-export-modal button-template="src/inspirehep-js/export/templates/button_single.html"' +
+                 ' body-template="src/inspirehep-js/export/templates/modalbody.html"' +
+                 ' recid=123> </inspire-export-modal>';
 
       var response = {
         data: "Test"
       };
 
       // Expect a request
-      $httpBackend.whenGET('/api/literature/123').respond(200, response);
+      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25').respond(200, response);
       
       // Compile
       template = $compile(template)(scope);
