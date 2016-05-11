@@ -29,6 +29,9 @@
     }
 
     function allChecked() {
+      if (!$scope.$parent.vm.invenioSearchResults.hits) {
+        return false;
+      }
       return $scope.$parent.vm.invenioSearchResults.hits.hits.length === exportRecords.getIdsToExport().length;
     }
 
