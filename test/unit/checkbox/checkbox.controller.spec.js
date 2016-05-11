@@ -104,6 +104,13 @@ describe('Controller: checkboxCtrl', function () {
       expect(_exportRecords.getIdsToExport()).to.deep.equal([]);
 
     });
+
+    it('should return allChecked false when no hits', function () {
+
+      scope.$parent.vm.invenioSearchResults = {}
+
+      expect(scope.allChecked()).to.be.equal(false);
+    });
   })
 
 });
