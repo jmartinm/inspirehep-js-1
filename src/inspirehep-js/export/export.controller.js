@@ -81,13 +81,24 @@
         exportRecids = exportRecords.getIdsToExport();
       }
 
-      // Access current search page parameters
-      var invenioSearchCurrentArgs = $scope.$parent.vm.invenioSearchCurrentArgs;
-      
+      var invenioSearchCurrentArgs;
+
+      // Access current search page parameters or fall back to defaults
+      if ( $scope.$parent.vm === undefined ) {
+        invenioSearchCurrentArgs = {
+          'method': 'GET',
+          'params': {'q': ''},
+          'url': '/api/literature/'
+        };
+      }
+      else {
+        invenioSearchCurrentArgs = $scope.$parent.vm.invenioSearchCurrentArgs;
+      }
+
       exportAPI
           .getFormat(invenioSearchCurrentArgs, vm.exportFormat, exportRecids)
           .then(successfulRequest, erroredRequest)
-          .finally(clearRequest);      
+          .finally(clearRequest);
 
       function successfulRequest(response) {
         vm.exportContent = response.data;

@@ -34,6 +34,7 @@ describe('Controller: ExportInstanceCtrl', function () {
   var modalInstance;
   var sandbox;
   var _exportRecords;
+  var _exportAPI;
 
   beforeEach(inject(
     function (_$httpBackend_, _$rootScope_, _$controller_, exportAPI, exportRecords) {
@@ -42,6 +43,7 @@ describe('Controller: ExportInstanceCtrl', function () {
       $rootScope = _$rootScope_;
       scope = $rootScope;
       _exportRecords = exportRecords;
+      _exportAPI = exportAPI;
 
       sandbox = sinon.sandbox.create();
 
@@ -95,6 +97,11 @@ describe('Controller: ExportInstanceCtrl', function () {
       };
 
       $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+        'Accept': 'application/x-bibtex'
+      }
+      ).respond(200, response_bibtex);
+
+      $httpBackend.whenGET('/api/literature/?q=control_number:123', {
         'Accept': 'application/x-bibtex'
       }
       ).respond(200, response_bibtex);
@@ -211,6 +218,26 @@ describe('Controller: ExportInstanceCtrl', function () {
       $httpBackend.flush();
 
       ctrl.downloadFormat();
+    });
+
+    it('use default http parameters when invenio-js not present', function () {
+
+      scope.$parent = {}
+      scope.$parent.vm = undefined;
+
+      ctrl = $controller('exportModalInstanceCtrl', {
+        $scope: scope,
+        $uibModalInstance: modalInstance,
+        exportAPI: _exportAPI,
+        recid: '123',
+      });
+
+      $httpBackend.expectGET('/api/literature/?q=control_number:123', {
+        'Accept': 'application/x-bibtex'
+      });
+
+      $httpBackend.flush();
+
     });
 
 
