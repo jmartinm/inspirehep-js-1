@@ -12,6 +12,9 @@
 
       var control_numbers = [];
 
+      // Delete page from http_params to get the correct results
+      delete http_params['params']['page'];
+
       angular.forEach(ids, function(value, key) {
         control_numbers.push('control_number:' + value);
       });

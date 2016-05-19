@@ -39,6 +39,12 @@
       return exportRecords.getIdsToExport().length > 0;
     }
    
+    function resetExportRecids() {
+      exportRecords.resetRecids();
+    }
+
+    $scope.$on('invenio.search.success', resetExportRecids);
+
   }
 
   checkboxCtrl.$inject = ['$scope', 'exportRecords'];

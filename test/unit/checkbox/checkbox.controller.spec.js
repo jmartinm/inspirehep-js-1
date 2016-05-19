@@ -42,24 +42,6 @@ describe('Controller: checkboxCtrl', function () {
       scope = $rootScope;
       _exportRecords = exportRecords;
 
-      scope.$parent = {}
-      scope.$parent.vm = {}
-      scope.$parent.vm.invenioSearchResults = {}
-      scope.$parent.vm.invenioSearchResults.hits = {}
-      scope.$parent.vm.invenioSearchResults.hits.hits = [
-        {
-          id: 1
-        },
-        {
-          id: 2
-        },
-        {
-          id: 3
-        }
-      ]
-
-
-
       ctrl = $controller('checkboxCtrl', {
         $scope : scope,
         exportRecords: _exportRecords
@@ -90,6 +72,23 @@ describe('Controller: checkboxCtrl', function () {
 
     it('should toggle all ids correctly', function () {
 
+      scope.$parent = {}
+      scope.$parent.vm = {}
+      scope.$parent.vm.invenioSearchResults = {}
+      scope.$parent.vm.invenioSearchResults.hits = {}
+      scope.$parent.vm.invenioSearchResults.hits.hits = [
+        {
+          id: 1
+        },
+        {
+          id: 2
+        },
+        {
+          id: 3
+        }
+      ]
+
+
       expect(_exportRecords.getIdsToExport()).to.deep.equal([]);
       expect(scope.anyChecked()).to.be.equal(false);
 
@@ -103,14 +102,26 @@ describe('Controller: checkboxCtrl', function () {
 
       expect(_exportRecords.getIdsToExport()).to.deep.equal([]);
 
+      scope.toggleAllIds();
+
+      // Test that after succesful search the recids get reseted
+      $rootScope.$broadcast('invenio.search.success');
+      expect(_exportRecords.getIdsToExport()).to.deep.equal([]);
+
     });
 
     it('should return allChecked false when no hits', function () {
 
+      scope.$parent = {}
+      scope.$parent.vm = {}
       scope.$parent.vm.invenioSearchResults = {}
 
       expect(scope.allChecked()).to.be.equal(false);
+
+      $rootScope.$broadcast('invenio.search.success');
+
     });
+
   })
 
 });
