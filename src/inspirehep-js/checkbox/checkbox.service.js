@@ -7,7 +7,8 @@
       addIdToExport: addIdToExport,
       removeIdFromExport: removeIdFromExport,
       toggleIdToExport: toggleIdToExport,
-      getIdsToExport: getIdsToExport
+      getIdsToExport: getIdsToExport,
+      resetRecids: resetRecids
     };
 
     return service;
@@ -49,6 +50,10 @@
 
     function getIdsToExport(){
       return recids;
+    }
+
+    function resetRecids(){
+      recids = [];
     }
    
   }

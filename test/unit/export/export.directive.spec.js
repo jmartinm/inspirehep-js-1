@@ -69,7 +69,7 @@ describe('Check export directive', function() {
       };
 
       // Expect a request
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25').respond(200, response);
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25').respond(200, response);
       
       // Compile
       template = $compile(template)(scope);

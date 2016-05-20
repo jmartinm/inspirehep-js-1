@@ -96,7 +96,7 @@ describe('Controller: ExportInstanceCtrl', function () {
         data: 'My LaTeX EU'
       };
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'
       }
       ).respond(200, response_bibtex);
@@ -106,22 +106,22 @@ describe('Controller: ExportInstanceCtrl', function () {
       }
       ).respond(200, response_bibtex);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123+OR+control_number:555&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123+OR+control_number:555&size=25', {
         'Accept': 'application/x-bibtex'
       }
       ).respond(200, response_multiple_bibtex);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexeu'
       }
       ).respond(200, response_latexeu);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexus'
       }
       ).respond(200, response_latexus);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:500&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:500&size=25', {
         'Accept': 'application/x-bibtex'
       }
       ).respond(500, {success: false});
@@ -147,7 +147,7 @@ describe('Controller: ExportInstanceCtrl', function () {
   describe('Loading formats', function () {
     it('should send an initial request to load a format', function () {
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'
       });
 
@@ -159,7 +159,7 @@ describe('Controller: ExportInstanceCtrl', function () {
       // Flush initial request
       $httpBackend.flush();
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexus'
       });
 
@@ -167,7 +167,7 @@ describe('Controller: ExportInstanceCtrl', function () {
 
       $httpBackend.flush();
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexeu'
       });
 
@@ -183,7 +183,7 @@ describe('Controller: ExportInstanceCtrl', function () {
 
       ctrl.recid = '500';
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:500&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:500&size=25', {
         'Accept': 'application/x-bibtex'
       });
 
@@ -198,7 +198,7 @@ describe('Controller: ExportInstanceCtrl', function () {
 
       ctrl.recid = undefined;
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123+OR+control_number:555&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123+OR+control_number:555&size=25', {
         'Accept': 'application/x-bibtex'
       });
 
@@ -211,7 +211,7 @@ describe('Controller: ExportInstanceCtrl', function () {
 
     it('should download a given format', function () {
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'
       });
 

@@ -81,7 +81,7 @@
         exportRecids = exportRecords.getIdsToExport();
       }
 
-      var invenioSearchCurrentArgs;
+      var invenioSearchCurrentArgs = {};
 
       // Access current search page parameters or fall back to defaults
       if ( $scope.$parent.vm === undefined ) {
@@ -92,7 +92,8 @@
         };
       }
       else {
-        invenioSearchCurrentArgs = $scope.$parent.vm.invenioSearchCurrentArgs;
+        angular.copy($scope.$parent.vm.invenioSearchCurrentArgs,
+                     invenioSearchCurrentArgs);
       }
 
       exportAPI

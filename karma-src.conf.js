@@ -55,6 +55,7 @@ module.exports = function(config) {
       'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
       'node_modules/clipboard/dist/clipboard.js',
       'node_modules/ngclipboard/src/ngclipboard.js',
+      'node_modules/invenio-search-js/dist/invenio-search-js.js',
       'src/**/*.js',
       'src/**/*.html',
       'test/unit/**/*.js',

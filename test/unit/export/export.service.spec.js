@@ -73,32 +73,32 @@ describe('Check export service', function() {
         data: 'My CV Text'
       };
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'
       }
       ).respond(200, response_bibtex);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexeu'
       }
       ).respond(200, response_latexeu);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexus'
       }
       ).respond(200, response_latexus);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-cvformatlatex'
       }
       ).respond(200, response_cvformatlatex);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-cvformathtml'
       }
       ).respond(200, response_cvformathtml);
 
-      $httpBackend.whenGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.whenGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-cvformattext'
       }
       ).respond(200, response_cvformattext);
@@ -109,7 +109,7 @@ describe('Check export service', function() {
     it('should send the correct API calls', function () {
       _exportAPI.getFormat(invenioSearchCurrentArgs, 'BibTex', ['123']);
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'
       });
 
@@ -117,7 +117,7 @@ describe('Check export service', function() {
 
       _exportAPI.getFormat(invenioSearchCurrentArgs, 'LaTex(EU)', ['123']);
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexeu'
       });
 
@@ -125,7 +125,7 @@ describe('Check export service', function() {
 
        _exportAPI.getFormat(invenioSearchCurrentArgs, 'LaTex(EU)', ['123']);
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexeu'
       });
 
@@ -133,7 +133,7 @@ describe('Check export service', function() {
 
        _exportAPI.getFormat(invenioSearchCurrentArgs, 'LaTex(US)', ['123']);
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-latexus'
       });
 
@@ -141,7 +141,7 @@ describe('Check export service', function() {
 
        _exportAPI.getFormat(invenioSearchCurrentArgs, 'CV format (LaTex)', ['123']);
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-cvformatlatex'
       });
 
@@ -149,7 +149,7 @@ describe('Check export service', function() {
 
        _exportAPI.getFormat(invenioSearchCurrentArgs, 'CV format (html)', ['123']);
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-cvformathtml'
       });
 
@@ -157,7 +157,7 @@ describe('Check export service', function() {
 
        _exportAPI.getFormat(invenioSearchCurrentArgs, 'CV format (text)', ['123']);
 
-      $httpBackend.expectGET('/api/literature/?page=1&q=control_number:123&size=25', {
+      $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-cvformattext'
       });
 

@@ -77,6 +77,12 @@
       return exportRecords.getIdsToExport().length > 0;
     }
    
+    function resetExportRecids() {
+      exportRecords.resetRecids();
+    }
+
+    $scope.$on('invenio.search.success', resetExportRecids);
+
   }
 
   checkboxCtrl.$inject = ['$scope', 'exportRecords'];
@@ -95,7 +101,8 @@
       addIdToExport: addIdToExport,
       removeIdFromExport: removeIdFromExport,
       toggleIdToExport: toggleIdToExport,
-      getIdsToExport: getIdsToExport
+      getIdsToExport: getIdsToExport,
+      resetRecids: resetRecids
     };
 
     return service;
@@ -137,6 +144,10 @@
 
     function getIdsToExport(){
       return recids;
+    }
+
+    function resetRecids(){
+      recids = [];
     }
    
   }
@@ -229,7 +240,7 @@
         exportRecids = exportRecords.getIdsToExport();
       }
 
-      var invenioSearchCurrentArgs;
+      var invenioSearchCurrentArgs = {};
 
       // Access current search page parameters or fall back to defaults
       if ( $scope.$parent.vm === undefined ) {
@@ -240,7 +251,8 @@
         };
       }
       else {
-        invenioSearchCurrentArgs = $scope.$parent.vm.invenioSearchCurrentArgs;
+        angular.copy($scope.$parent.vm.invenioSearchCurrentArgs,
+                     invenioSearchCurrentArgs);
       }
 
       exportAPI
@@ -327,6 +339,9 @@
     function getFormat(http_params, format, ids) {
 
       var control_numbers = [];
+
+      // Delete page from http_params to get the correct results
+      delete http_params['params']['page'];
 
       angular.forEach(ids, function(value, key) {
         control_numbers.push('control_number:' + value);
