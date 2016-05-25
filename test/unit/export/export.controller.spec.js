@@ -210,6 +210,8 @@ describe('Controller: ExportInstanceCtrl', function () {
     });
 
     it('should download a given format', function () {
+      var hidden_link = '<a id="download_hidden_link"></a>';
+      angular.element(document.body).append(hidden_link);
 
       $httpBackend.expectGET('/api/literature/?q=control_number:123&size=25', {
         'Accept': 'application/x-bibtex'

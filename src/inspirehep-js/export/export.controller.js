@@ -52,12 +52,14 @@
     }
 
     function downloadFormat(){
-      var blob = new Blob([ vm.exportContent ], { type : 'text/plain' });
-      var response_data = 'text/plain;charset=utf-8,' + encodeURIComponent(vm.exportContent);
-      var trigger_element =angular.element('<a id="data-download" href="data:' +
-          response_data + '" download="' + vm.exportFormat +
-          '.' + vm.formats[vm.exportFormat] + '">download</a>');
-      trigger_element[0].click();
+      var format_blob = new Blob([vm.exportContent], {type:'text/plain'});
+      var linkElem = $('#download_hidden_link');
+      var element = angular.element(linkElem);
+      element.attr({
+        href: window.URL.createObjectURL(format_blob),
+        target: '_self',
+        download: vm.exportFormat + '.' + vm.formats[vm.exportFormat]
+      })[0].click();
     }
 
     function exportFormatChanged(newValue, oldValue) {
